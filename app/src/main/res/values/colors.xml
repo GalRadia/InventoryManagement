@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Colors -->
+    <color name="primaryColor">#6200EE</color>
+    <color name="primaryVariant">#3700B3</color>
+    <color name="secondaryColor">#03DAC5</color>
+
+    <!-- Background and Surface Colors -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#757575</color>
+
+    <!-- Error Colors -->
+    <color name="error">#B00020</color>
+    <color name="onError">#FFFFFF</color>
+
+    <!-- Custom Colors -->
+    <color name="accent">#FF4081</color>
+    <color name="highlight">#FFC107</color>
+    <color name="divider">#BDBDBD</color>
 </resources>

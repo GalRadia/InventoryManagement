@@ -26,6 +26,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -40,6 +44,7 @@ dependencies {
     api(libs.converter.gson)
     //security
     implementation(libs.security.crypto)
+
 
 
 }

@@ -9,5 +9,8 @@ public interface UserService {
     Call<Void> login(@Body String username, @Body String password);
 
     @POST("auth/register")
-    Call<Void> register(@Body String username, @Body String password);
+    Call<Void> register(@Body String username, @Body String password, @Body String role);
+
+    @POST("auth/refresh_token")
+    Call<Void> refreshToken(@Body String token);
 }

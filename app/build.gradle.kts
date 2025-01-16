@@ -55,5 +55,9 @@ dependencies {
     implementation(libs.lifecycle.extensions)
     //glide
     implementation(libs.glide)
+    //vico
+    implementation(libs.core)
+    implementation(libs.views)
+
 
 }

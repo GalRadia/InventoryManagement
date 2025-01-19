@@ -25,10 +25,10 @@ public interface ItemService {
     Call<List<Item>> searchItems(@Query("name") String name);
 
     @POST("inventory/insert_item")
-    Call<Void> insertItem(@Body String name, @Body int quantity, @Body float price, @Body String description);
+    Call<Void> insertItem(@Body Item item);
 
     @PUT("inventory/update_item/{id}")
     Call<Item> updateItem(@Path("id") String id,@Body Item item);
     @DELETE("inventory/remove/{id}")
-    Call<Item> removeItem(@Path("id") String id);
+    Call<Void> removeItem(@Path("id") String id);
 }

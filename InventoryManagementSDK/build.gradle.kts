@@ -42,8 +42,12 @@ dependencies {
     //retrofit2
     api(libs.retrofit)
     api(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
     //security
     implementation(libs.security.crypto)
+    implementation(libs.mpandroidchart)
+
 
 
 

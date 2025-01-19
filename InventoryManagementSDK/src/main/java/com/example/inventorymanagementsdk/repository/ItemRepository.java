@@ -15,11 +15,17 @@ import retrofit2.Response;
 
 public class ItemRepository {
     ItemService itemService;
+    private final MutableLiveData<List<Item>> itemsMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<Item> itemUpdateMutableLiveData = new MutableLiveData<>();
+
+    MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
+
 
     public ItemRepository() {
         this.itemService = ApiClient.getClient().create(ItemService.class);
     }
-    public LiveData<Item> getItemByIdAsLiveData(String id){
+
+    public LiveData<Item> getItemByIdAsLiveData(String id) {
         MutableLiveData<Item> itemMutableLiveData = new MutableLiveData<>();
         itemService.getItemByID(id).enqueue(new Callback<>() {
             @Override
@@ -34,8 +40,12 @@ public class ItemRepository {
         });
         return itemMutableLiveData;
     }
-    public LiveData<List<Item>> getAllItemsAsLiveData(){
-        MutableLiveData<List<Item>> itemsMutableLiveData = new MutableLiveData<>();
+
+    public Call<Item> getItemByIdCall(String id) {
+        return itemService.getItemByID(id);
+    }
+
+    public LiveData<List<Item>> getAllItemsAsLiveData() {
         itemService.getItems().enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
@@ -49,7 +59,12 @@ public class ItemRepository {
         });
         return itemsMutableLiveData;
     }
-    public LiveData<List<Item>> searchItemsAsLiveData(String name){
+
+    public Call<List<Item>> getAllItemsCall() {
+        return itemService.getItems();
+    }
+
+    public LiveData<List<Item>> searchItemsAsLiveData(String name) {
         MutableLiveData<List<Item>> itemsMutableLiveData = new MutableLiveData<>();
         itemService.searchItems(name).enqueue(new Callback<>() {
             @Override
@@ -64,9 +79,14 @@ public class ItemRepository {
         });
         return itemsMutableLiveData;
     }
-    public LiveData<Void> insertItem(String name, int quantity, float price, String description){
+
+    public Call<List<Item>> searchItemsCall(String name) {
+        return itemService.searchItems(name);
+    }
+
+    public LiveData<Void> insertItem(Item item) {
         MutableLiveData<Void> voidMutableLiveData = new MutableLiveData<>();
-        itemService.insertItem(name, quantity, price, description).enqueue(new Callback<>() {
+        itemService.insertItem(item).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 voidMutableLiveData.postValue(response.body());
@@ -79,35 +99,47 @@ public class ItemRepository {
         });
         return voidMutableLiveData;
     }
-    public LiveData<Item> updateItem(String id, Item item){
-        MutableLiveData<Item> itemMutableLiveData = new MutableLiveData<>();
+
+    public Call<Void> insertItemCall(Item item) {
+        return itemService.insertItem(item);
+    }
+
+    public LiveData<Item> updateItem(String id, Item item) {
         itemService.updateItem(id, item).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Item> call, Response<Item> response) {
-                itemMutableLiveData.postValue(response.body());
+                itemUpdateMutableLiveData.postValue(response.body());
             }
 
             @Override
             public void onFailure(Call<Item> call, Throwable t) {
-                itemMutableLiveData.postValue(null);
+                itemUpdateMutableLiveData.postValue(null);
             }
         });
-        return itemMutableLiveData;
+        return itemUpdateMutableLiveData;
     }
-    public LiveData<Item> removeItem(String id){
-        MutableLiveData<Item> itemMutableLiveData = new MutableLiveData<>();
+
+    public Call<Item> updateItemCall(String id, Item item) {
+        return itemService.updateItem(id, item);
+    }
+
+    public LiveData<Boolean> removeItem(String id) {
         itemService.removeItem(id).enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<Item> call, Response<Item> response) {
-                itemMutableLiveData.postValue(response.body());
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                booleanMutableLiveData.postValue(true);
             }
 
             @Override
-            public void onFailure(Call<Item> call, Throwable t) {
-                itemMutableLiveData.postValue(null);
+            public void onFailure(Call<Void> call, Throwable t) {
+                booleanMutableLiveData.postValue(false);
             }
         });
-        return itemMutableLiveData;
+        return booleanMutableLiveData;
+    }
+
+    public Call<Void> removeItemCall(String id) {
+        return itemService.removeItem(id);
     }
 
 }

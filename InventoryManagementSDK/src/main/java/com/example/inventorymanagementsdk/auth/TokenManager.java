@@ -9,10 +9,17 @@ public class TokenManager {
     private static final String PREFS_NAME = "auth_prefs";
     private static final String KEY_TOKEN = "jwt_token";
     private static Context context;
+    protected static boolean isManager;
 
     // Set the application context once
     public static void initialize(Context context) {
         TokenManager.context = context.getApplicationContext();
+    }
+    public static void setManager(boolean manager) {
+        isManager = manager;
+    }
+    public static boolean isManager() {
+        return isManager;
     }
 
     // Save the token to EncryptedSharedPreferences
@@ -57,4 +64,5 @@ public class TokenManager {
             return null;
         }
     }
+
 }

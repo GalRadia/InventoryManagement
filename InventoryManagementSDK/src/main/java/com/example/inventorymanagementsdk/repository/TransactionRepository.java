@@ -2,13 +2,18 @@ package com.example.inventorymanagementsdk.repository;
 
 import static com.example.inventorymanagementsdk.auth.TokenManager.getToken;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.inventorymanagementsdk.api.ApiClient;
 import com.example.inventorymanagementsdk.api.services.TransactionService;
 import com.example.inventorymanagementsdk.models.Transaction;
+import com.example.inventorymanagementsdk.models.Trend;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -18,16 +23,17 @@ import retrofit2.Response;
 public class TransactionRepository {
     TransactionService transactionService;
     UserRepository userRepository;
+    MutableLiveData<List<Transaction>> transactionsMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<List<Trend>> trendsMutableLiveData = new MutableLiveData<>();
 
     public TransactionRepository() {
         this.transactionService = ApiClient.getClient().create(TransactionService.class);
         userRepository = new UserRepository();
     }
 
-    public LiveData<Void> addTransaction(String id, int quantity) {
-        String token = getToken();
+    public LiveData<Void> addTransaction(Transaction transaction) {
         MutableLiveData<Void> transactionMutableLiveData = new MutableLiveData<>();
-        transactionService.purchase(id, quantity).enqueue(new Callback<>() {
+        transactionService.purchase(transaction).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 transactionMutableLiveData.postValue(response.body());
@@ -41,26 +47,31 @@ public class TransactionRepository {
         return transactionMutableLiveData;
     }
 
-    public LiveData<List<Transaction>> getTrending(int limit, int days) {
-        MutableLiveData<List<Transaction>> transactionsMutableLiveData = new MutableLiveData<>();
+    public Call<Void> addTransactionCall(Transaction transaction) {
+        return transactionService.purchase(transaction);
+    }
+
+    public LiveData<List<Trend>> getTrending(int limit, int days) {
         transactionService.getTrending(limit, days).enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
-                transactionsMutableLiveData.postValue(response.body());
+            public void onResponse(Call<List<Trend>> call, Response<List<Trend>> response) {
+                Log.w("tag", "onResponse:" + response.body());
+                trendsMutableLiveData.postValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Transaction>> call, Throwable t) {
-                transactionsMutableLiveData.postValue(null);
+            public void onFailure(Call<List<Trend>> call, Throwable t) {
+                Log.w("tag", "onFailure: " + t.getMessage());
+                trendsMutableLiveData.postValue(new ArrayList<>());
             }
         });
-        return transactionsMutableLiveData;
+        return trendsMutableLiveData;
+    }
+    public Call<List<Trend>> getTrendingCall(int limit, int days){
+        return transactionService.getTrending(limit, days);
     }
 
     public LiveData<List<Transaction>> getTransactions() {
-        MutableLiveData<List<Transaction>> transactionsMutableLiveData = new MutableLiveData<>();
-        String token = getToken();
-
         transactionService.getTransactions().enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
@@ -74,12 +85,13 @@ public class TransactionRepository {
         });
         return transactionsMutableLiveData;
     }
+    public Call<List<Transaction>> getTransactionsCall(){
+        return transactionService.getTransactions();
+    }
 
-    public LiveData<List<Transaction>> getTransactionsByUser(String user_name) {
-        MutableLiveData<List<Transaction>> transactionsMutableLiveData = new MutableLiveData<>();
-        String token = getToken();
+    public LiveData<List<Transaction>> getTransactionsByUser() {
 
-        transactionService.getTransactionsByUser(user_name).enqueue(new Callback<>() {
+        transactionService.getTransactionsByUser().enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
                 transactionsMutableLiveData.postValue(response.body());
@@ -91,6 +103,9 @@ public class TransactionRepository {
             }
         });
         return transactionsMutableLiveData;
+    }
+    public Call<List<Transaction>> getTransactionsByUserCall(){
+        return transactionService.getTransactionsByUser();
     }
 
 }

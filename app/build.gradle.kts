@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.example.inventorymanagement"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.inventorymanagement"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 26
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -31,6 +31,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -55,9 +56,13 @@ dependencies {
     implementation(libs.lifecycle.extensions)
     //glide
     implementation(libs.glide)
-    //vico
-    implementation(libs.core)
-    implementation(libs.views)
+
+    implementation(libs.swiperefreshlayout)
+    implementation(libs.mpandroidchart)
+    implementation("androidx.core:core-splashscreen:1.0.1") // SplashScreen API
+    implementation("com.airbnb.android:lottie:6.1.0")       // Lottie Animation
+
+
 
 
 }

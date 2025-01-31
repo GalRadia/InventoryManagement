@@ -99,6 +99,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void deleteItem(int position) {
         Item item = itemList.get(position);
         itemSwipeCallback.onDelete(item);
+        notifyDataSetChanged();
 
     }
 
@@ -106,7 +107,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return itemList.get(position);
     }
 
-    public void editItem(int position, Item food) {
+    public void editItem(int position, Item item) {
+        itemSwipeCallback.onEdit(item);
+        notifyDataSetChanged();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {

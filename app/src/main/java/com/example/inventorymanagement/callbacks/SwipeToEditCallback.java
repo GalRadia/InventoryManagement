@@ -38,8 +38,8 @@ public class SwipeToEditCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAdapterPosition();
-        Item food = mAdapter.getItem(position);
-        mAdapter.editItem(position, food);
+        Item item = mAdapter.getItem(position);
+        mAdapter.editItem(position, item);
     }
 
     @Override

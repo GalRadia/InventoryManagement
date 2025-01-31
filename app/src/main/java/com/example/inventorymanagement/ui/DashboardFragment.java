@@ -45,6 +45,8 @@ public class DashboardFragment extends Fragment {
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ItemTouchHelper itemTouchHelperDelete;
+    private ItemTouchHelper itemTouchHelperEdit;
     private InventoryViewModel inventoryViewModel = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -85,10 +87,10 @@ public class DashboardFragment extends Fragment {
                     showEditItemDialog(item);
                 }
             });
-            ItemTouchHelper itemTouchHelperDelete = new ItemTouchHelper(new SwipeToDeleteCallback(itemAdapter, getContext()));
+            itemTouchHelperDelete = new ItemTouchHelper(new SwipeToDeleteCallback(itemAdapter, getContext()));
             itemTouchHelperDelete.attachToRecyclerView(recyclerView);
 
-            ItemTouchHelper itemTouchHelperEdit = new ItemTouchHelper(new SwipeToEditCallback(itemAdapter, getContext()));
+            itemTouchHelperEdit = new ItemTouchHelper(new SwipeToEditCallback(itemAdapter, getContext()));
             itemTouchHelperEdit.attachToRecyclerView(recyclerView);            // Setup ItemTouchHelper for swipe actions
         }
         swipeRefreshLayout.setOnRefreshListener(() -> {

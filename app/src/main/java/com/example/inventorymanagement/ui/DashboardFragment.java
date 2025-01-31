@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class DashboardFragment extends Fragment {
     private ItemTouchHelper itemTouchHelperDelete;
     private ItemTouchHelper itemTouchHelperEdit;
     private InventoryViewModel inventoryViewModel = null;
+    private SearchView searchView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class DashboardFragment extends Fragment {
         recyclerView = binding.rvItems;
         swipeRefreshLayout = binding.swipeRefresh;
         insertItemButton = binding.addItemButton;
+        searchView = binding.searchView;
+        searchView.clearFocus();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         itemAdapter = new ItemAdapter(getContext());
         itemAdapter.setItemCallback(this::showBuyItemDialog);
@@ -97,8 +101,25 @@ public class DashboardFragment extends Fragment {
             inventoryViewModel.fetchItems();
             swipeRefreshLayout.setRefreshing(false);
         });
-        inventoryViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
+//        inventoryViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
+//            itemAdapter.setItems(items);
+//        });
+
+        inventoryViewModel.getSearchResults().observe(getViewLifecycleOwner(), items -> {
             itemAdapter.setItems(items);
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                inventoryViewModel.setSearchQuery(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                inventoryViewModel.setSearchQuery(newText);
+                return true;
+            }
         });
 
 

@@ -21,7 +21,7 @@ public interface ItemService {
     @GET("inventory/items/{id}")
     Call<Item> getItemByID(@Path("id") String id);
 
-    @GET("invenroty/search")
+    @GET("inventory/search")
     Call<List<Item>> searchItems(@Query("name") String name);
 
     @POST("inventory/insert_item")

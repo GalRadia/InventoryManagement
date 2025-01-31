@@ -133,7 +133,7 @@ public class InventoryManagement {
         return transactionRepository.getTransactionsCall();
     }
 
-    public LiveData<Void> register(String username, String password, String role) {
+    public LiveData<Boolean> register(String username, String password, String role) {
         User user = new User(username, password, role);
         return userRepository.register(user);
     }

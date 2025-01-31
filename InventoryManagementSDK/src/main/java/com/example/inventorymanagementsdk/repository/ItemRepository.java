@@ -16,6 +16,8 @@ import retrofit2.Response;
 public class ItemRepository {
     ItemService itemService;
     private final MutableLiveData<List<Item>> itemsMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Item>>searchItemsMutableLiveData = new MutableLiveData<>();
+
     MutableLiveData<Item> itemUpdateMutableLiveData = new MutableLiveData<>();
 
     MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
@@ -65,19 +67,18 @@ public class ItemRepository {
     }
 
     public LiveData<List<Item>> searchItemsAsLiveData(String name) {
-        MutableLiveData<List<Item>> itemsMutableLiveData = new MutableLiveData<>();
         itemService.searchItems(name).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                itemsMutableLiveData.postValue(response.body());
+                searchItemsMutableLiveData.postValue(response.body());
             }
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
-                itemsMutableLiveData.postValue(null);
+                searchItemsMutableLiveData.postValue(null);
             }
         });
-        return itemsMutableLiveData;
+        return searchItemsMutableLiveData;
     }
 
     public Call<List<Item>> searchItemsCall(String name) {

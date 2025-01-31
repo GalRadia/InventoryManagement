@@ -21,26 +21,27 @@ public class UserRepository {
     MutableLiveData<String> expDate = new MutableLiveData<>();
     MutableLiveData<Boolean> timeStamp = new MutableLiveData<>();
     MutableLiveData<List<User>> userMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<Boolean> userRegisterMutableLiveData = new MutableLiveData<>();
+
 
 
     public UserRepository() {
         this.userService = ApiClient.getClient().create(UserService.class);
     }
 
-    public LiveData<Void> register(User user) {
-        MutableLiveData<Void> userMutableLiveData = new MutableLiveData<>();
+    public LiveData<Boolean> register(User user) {
         userService.register(user).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                userMutableLiveData.postValue(null);
+                userRegisterMutableLiveData.postValue(true);
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                userMutableLiveData.postValue(null);
+                userRegisterMutableLiveData.postValue(false);
             }
         });
-        return userMutableLiveData;
+        return userRegisterMutableLiveData;
     }
 
     public Call<Void> registerCall(User user) {

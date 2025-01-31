@@ -75,8 +75,8 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     //retrofit2
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
+    api(libs.retrofit)
+    api(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
     //security

@@ -79,29 +79,17 @@ public class SignInActivity extends AppCompatActivity {
             String username = Objects.requireNonNull(usernameEditText.getText()).toString();
             String password = Objects.requireNonNull(passwordEditText.getText()).toString();
             String role = roleSwitch.isChecked() ? "manager" : "user";
-            inventoryManagement.registerCall(username, password, role).enqueue(new retrofit2.Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        new AlertDialog.Builder(SignInActivity.this)
-                                .setTitle("Registration Successful")
-                                .setMessage("You can now login with your credentials")
-                                .setPositiveButton("OK", null)
-                                .show();
-                    } else {
-                        new AlertDialog.Builder(SignInActivity.this)
-                                .setTitle("Registration Failed")
-                                .setMessage("Username already exists")
-                                .setPositiveButton("OK", null)
-                                .show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
+            inventoryManagement.register(username, password, role).observe(this, success -> {
+                if (success!=null) {
+                    new AlertDialog.Builder(SignInActivity.this)
+                            .setTitle("Registration Successful")
+                            .setMessage("You can now login")
+                            .setPositiveButton("OK", null)
+                            .show();
+                } else {
                     new AlertDialog.Builder(SignInActivity.this)
                             .setTitle("Registration Failed")
-                            .setMessage("An error occurred")
+                            .setMessage("Username already exists")
                             .setPositiveButton("OK", null)
                             .show();
                 }

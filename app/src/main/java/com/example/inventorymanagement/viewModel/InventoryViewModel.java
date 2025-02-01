@@ -47,9 +47,13 @@ public class InventoryViewModel extends AndroidViewModel {
     public void fetchData() {
         fetchExp();
         fetchItems();
-        fetchActiveUsers();
-        fetchAllTransactions();
-        fetchTransactionByUser();
+        if (isManager()) {
+            fetchActiveUsers();
+            fetchAllTransactions();
+
+        } else {
+            fetchTransactionByUser();
+        }
     }
 
     public LiveData<Item> updateItem(String id, Item item) {
@@ -66,9 +70,9 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
 
-    public Call<Void> insertItem(String name, int quantity, float price, String description) {
+    public LiveData<Void> insertItem(String name, int quantity, float price, String description) {
         // Insert an item into the inventory
-        return inventoryManagement.insertItemCall(name, quantity, price, description);
+        return inventoryManagement.insertItem(name, quantity, price, description);
     }
 
     public LiveData<Boolean> refreshToken() {
@@ -102,20 +106,16 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
     public void purchaseItem(Item item, int quantity) {
-        inventoryManagement.insertTransaction(item.getId(), item.getName(), item.getPrice(), quantity);
+        inventoryManagement.insertTransaction(item.getId(), quantity);
     }
 
     public LiveData<List<Transaction>> getAllTransactions() {
-        if (allTransactionLiveData == null) {
-            fetchAllTransactions();
-        }
+        fetchAllTransactions();
         return allTransactionLiveData;
     }
 
     public LiveData<List<Transaction>> getUserTransactions() {
-        if (userTransactionsLiveData == null) {
-            fetchTransactionByUser();
-        }
+        fetchTransactionByUser();
         return userTransactionsLiveData;
     }
 

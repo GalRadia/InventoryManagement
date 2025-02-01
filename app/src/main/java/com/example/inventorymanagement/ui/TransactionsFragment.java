@@ -21,13 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.inventorymanagement.adapters.TransactionAdapter;
-import com.example.inventorymanagement.databinding.FragmentNotificationsBinding;
+import com.example.inventorymanagement.databinding.FragmentTransactionsBinding;
 import com.example.inventorymanagement.viewModel.InventoryViewModel;
 import com.github.mikephil.charting.charts.BarChart;
 
-public class NotificationsFragment extends Fragment {
+public class TransactionsFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentTransactionsBinding binding;
     private InventoryViewModel inventoryViewModel = null;
     private TransactionAdapter transactionAdapter;
     private RecyclerView recyclerView;
@@ -41,7 +41,7 @@ public class NotificationsFragment extends Fragment {
         inventoryViewModel =
                 new ViewModelProvider(this).get(InventoryViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentTransactionsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         initUI();
         setupUI();
@@ -73,8 +73,10 @@ public class NotificationsFragment extends Fragment {
         recyclerView = binding.transactionsRecyclerView;
         swipeRefreshLayout = binding.refresh;
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            inventoryViewModel.fetchAllTransactions();
-            inventoryViewModel.fetchTransactionByUser();
+            if (inventoryViewModel.isManager())
+                inventoryViewModel.fetchAllTransactions();
+            else
+                inventoryViewModel.fetchTransactionByUser();
             swipeRefreshLayout.setRefreshing(false);
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -121,10 +123,8 @@ public class NotificationsFragment extends Fragment {
                 this.inventoryViewModel.getTrending(days, limit).observe(getViewLifecycleOwner(), trends -> {
                     barChart.setData(inventoryViewModel.getBarChartData(trends));
                     barChart.getDescription().setEnabled(false);
-                    barChart.getAxisLeft().setDrawGridLines(false);
-                    barChart.getAxisRight().setDrawGridLines(false);
                     barChart.getXAxis().setDrawGridLines(false);
-                    barChart.getXAxis().setEnabled(false);
+                    barChart.animateXY(3000, 3000); // animate horizontal and vertical 3000 milliseconds
                     barChart.invalidate();
                 });
             } else {

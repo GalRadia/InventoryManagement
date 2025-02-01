@@ -3,6 +3,7 @@ package com.example.inventorymanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -27,7 +28,7 @@ public class SignInActivity extends AppCompatActivity {
     private Button loginButton;
     private Button registerButton;
     private SwitchCompat roleSwitch;
-
+    private ProgressBar progressBar;
     private ActivitySignInBinding binding;
     private InventoryManagement inventoryManagement;
 
@@ -53,19 +54,26 @@ public class SignInActivity extends AppCompatActivity {
         loginButton = binding.loginButton;
         registerButton = binding.registerButton;
         roleSwitch = binding.role;
+        progressBar = binding.loadingProgress;
         inventoryManagement = new InventoryManagement(getApplicationContext());
     }
 
     public void setUpListeners() {
         loginButton.setOnClickListener(v -> {
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+            progressBar.setIndeterminate(true);
+
             String username = Objects.requireNonNull(usernameEditText.getText()).toString();
             String password = Objects.requireNonNull(passwordEditText.getText()).toString();
             inventoryManagement.login(username, password).observe(this, success -> {
+
                 if (success!=null) {
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
+                    progressBar.setVisibility(ProgressBar.GONE);
+
                     new AlertDialog.Builder(SignInActivity.this)
                             .setTitle("Login Failed")
                             .setMessage("Invalid username or password")

@@ -15,7 +15,7 @@ public class Transaction {
     private String buyer;
     private String timestamp;
 
-    public Transaction( float price, int quantity, String item_id,String item_name) {
+    public Transaction(float price, int quantity, String item_id, String item_name, String buyer) {
         this.item_name = item_name;
         this.price = price;
         this.quantity = quantity;
@@ -23,7 +23,12 @@ public class Transaction {
         this.buyer = buyer;
     }
 
-    public Transaction(String item_id, int quantity,String itemName, float price) {
+    public Transaction(String item_id, int quantity) {
+        this.item_id = item_id;
+        this.quantity = quantity;
+    }
+
+    public Transaction(String item_id, int quantity, String itemName, float price) {
         this.item_id = item_id;
         this.quantity = quantity;
         this.item_name = itemName;

@@ -107,13 +107,13 @@ public class InventoryManagement {
         return itemRepository.removeItemCall(id);
     }
 
-    public LiveData<Void> insertTransaction(String itemId,String itemName,float itemPrice, int quantity) {
-        Transaction transaction = new Transaction(itemId, quantity, itemName, itemPrice);
-    return transactionRepository.addTransaction(transaction);
+    public LiveData<Void> insertTransaction(String itemId, int quantity) {
+        Transaction transaction = new Transaction(itemId,quantity);
+        return transactionRepository.addTransaction(transaction);
     }
 
-    public Call<Void> insertTransactionCall(String itemId, int quantity, float price, String item_name,String buyer) {
-        Transaction transaction = new Transaction(price, quantity, itemId, item_name);
+    public Call<Void> insertTransactionCall(String itemId, int quantity) {
+        Transaction transaction = new Transaction(itemId,quantity);
         return transactionRepository.addTransactionCall(transaction);
     }
 
@@ -160,6 +160,7 @@ public class InventoryManagement {
     public LiveData<String> getAuditExp() {
         return userRepository.getExpDate();
     }
+
     public LiveData<List<User>> getActiveUsers() {
         return userRepository.getActiveUsers();
     }
@@ -169,7 +170,7 @@ public class InventoryManagement {
     }
 
     public LiveData<Boolean> refreshToken() {
-       return userRepository.refreshToken();
+        return userRepository.refreshToken();
     }
 
     public boolean isManager() {
@@ -191,7 +192,7 @@ public class InventoryManagement {
             }
 
             BarDataSet dataSet = new BarDataSet(new ArrayList<BarEntry>() {{
-                add(new BarEntry(trends.indexOf(trend), trend.getTotal_revenue()));
+                add(new BarEntry(trend.getTotal_sales(), trend.getTotal_revenue()));
             }}, trend.getItem_name());
 
             dataSet.setColor(color);  // Pass int instead of AtomicInteger

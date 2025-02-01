@@ -40,7 +40,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         Transaction transaction = transactionList.get(position);
         holder.itemNameTextView.setText(transaction.getItem_name());
         holder.quantityTextView.setText(String.valueOf(transaction.getQuantity()));
-        holder.priceTextView.setText(String.valueOf(transaction.getPrice()));
+        holder.priceTextView.setText(String.valueOf(transaction.getPrice()*transaction.getQuantity()));
         if (isManager) {
             holder.buyerTextView.setVisibility(View.VISIBLE);
         }

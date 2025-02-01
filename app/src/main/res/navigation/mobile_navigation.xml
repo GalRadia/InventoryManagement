@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.inventorymanagement.ui.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_items"
+        android:name="com.example.inventorymanagement.ui.ItemsFragment"
+        android:label="@string/title_items"
+        tools:layout="@layout/fragment_items" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.inventorymanagement.ui.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_transactions"
+        android:name="com.example.inventorymanagement.ui.TransactionsFragment"
+        android:label="@string/title_transactions"
+        tools:layout="@layout/fragment_transactions" />
 </navigation>

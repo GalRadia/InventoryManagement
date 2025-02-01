@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,20 +27,16 @@ import com.example.inventorymanagement.adapters.ItemAdapter;
 import com.example.inventorymanagement.callbacks.ItemSwipeCallback;
 import com.example.inventorymanagement.callbacks.SwipeToDeleteCallback;
 import com.example.inventorymanagement.callbacks.SwipeToEditCallback;
-import com.example.inventorymanagement.databinding.FragmentDashboardBinding;
+import com.example.inventorymanagement.databinding.FragmentItemsBinding;
 import com.example.inventorymanagement.viewModel.InventoryViewModel;
 import com.example.inventorymanagementsdk.models.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class ItemsFragment extends Fragment {
 
-public class DashboardFragment extends Fragment {
-
-    private FragmentDashboardBinding binding;
+    private FragmentItemsBinding binding;
     private Button insertItemButton;
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
@@ -56,7 +51,7 @@ public class DashboardFragment extends Fragment {
         inventoryViewModel =
                 new ViewModelProvider(this).get(InventoryViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentItemsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         initUI();
         setUpUI();
@@ -83,7 +78,8 @@ public class DashboardFragment extends Fragment {
                 @Override
                 public void onDelete(Item item) {
                     inventoryViewModel.removeItem(item.getId());
-
+                    Toast.makeText(getContext(), "Deleted " + item.getName(), Toast.LENGTH_SHORT).show();
+                    itemAdapter.notifyItemRemoved(itemAdapter.getItems().indexOf(item));
                 }
 
                 @Override
@@ -171,6 +167,7 @@ public class DashboardFragment extends Fragment {
             String description = descriptionEditText.getText().toString();
             Item updatedItem = new Item(name, quantity, price, description);
             inventoryViewModel.updateItem(item.getId(), updatedItem).observe(getViewLifecycleOwner(), item1 -> {
+                inventoryViewModel.fetchItems();
                 itemAdapter.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Updated " + name, Toast.LENGTH_SHORT).show();
 
@@ -226,7 +223,11 @@ public class DashboardFragment extends Fragment {
             String name = nameEditText.getText().toString();
             float price = Float.parseFloat(priceEditText.getText().toString());
             int quantity = Integer.parseInt(quantityEditText.getText().toString());
-            inventoryViewModel.insertItem(name, quantity, price, description);
+            inventoryViewModel.insertItem(name, quantity, price, description).observe(getViewLifecycleOwner(), item -> {
+                inventoryViewModel.fetchItems();
+
+                itemAdapter.notifyDataSetChanged();
+            });
             Toast.makeText(getContext(), "Inserted " + name, Toast.LENGTH_SHORT).show();
         });
 

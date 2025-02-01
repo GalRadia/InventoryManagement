@@ -21,6 +21,8 @@ public class ItemRepository {
     MutableLiveData<Item> itemUpdateMutableLiveData = new MutableLiveData<>();
 
     MutableLiveData<Boolean> booleanMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<Void> voidMutableLiveData = new MutableLiveData<>();
+
 
 
     public ItemRepository() {
@@ -86,7 +88,6 @@ public class ItemRepository {
     }
 
     public LiveData<Void> insertItem(Item item) {
-        MutableLiveData<Void> voidMutableLiveData = new MutableLiveData<>();
         itemService.insertItem(item).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

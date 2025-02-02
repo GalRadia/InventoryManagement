@@ -193,7 +193,7 @@ public class InventoryManagement {
             }
 
             BarDataSet dataSet = new BarDataSet(new ArrayList<BarEntry>() {{
-                add(new BarEntry(trend.getTotal_sales(), trend.getTotal_revenue()));
+                add(new BarEntry(trends.indexOf(trend), trend.getTotal_revenue()));
             }}, trend.getItem_name());
 
             dataSet.setColor(color);  // Pass int instead of AtomicInteger

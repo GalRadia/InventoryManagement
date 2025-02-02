@@ -119,10 +119,10 @@ public class TransactionsFragment extends Fragment {
             if (!limitText.isEmpty() && !daysText.isEmpty()) {
                 int limit = Integer.parseInt(limitText);
                 int days = Integer.parseInt(daysText);
-                this.inventoryViewModel.getTrending(days, limit).observe(getViewLifecycleOwner(), trends -> {
+                this.inventoryViewModel.getTrending(limit, days).observe(getViewLifecycleOwner(), trends -> {
                     barChart.setData(inventoryViewModel.getBarChartData(trends));
                     barChart.getDescription().setEnabled(false);
-                    barChart.getXAxis().setDrawGridLines(false);
+                    barChart.getXAxis().setEnabled(false);
                     barChart.animateXY(3000, 3000); // animate horizontal and vertical 3000 milliseconds
                     barChart.invalidate();
                 });

@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Item {
-
+    @SerializedName("_id")
     private String id;
     private String name;
     private int quantity;

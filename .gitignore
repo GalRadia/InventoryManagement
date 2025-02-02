@@ -171,4 +171,8 @@ google-services.json
 
 # Android Profiling
 *.hprof
-
+# Keep Gradle Wrapper
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.properties
+!gradle/wrapper/gradle-wrapper.jar

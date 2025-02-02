@@ -22,14 +22,8 @@ dependencies {
 	        implementation 'com.github.GalRadia:InventoryManagement:Tag'
 	}
 ```
-## Features
-- Add, update, and remove items
-- Fetch all items, transactions, and active users
-- Search items by name
-- Generate bar chart data for trends with MPAndroidChart
-- Manage user transactions
-- Refresh authentication token
-- Can receive all data by Calls or LiveData
-- Authentication with JWT and automatic invalidation of token (adding to header)
-- Can be used with Retrofit
+## Documentation
+You can find the documentation [here](https://galradia.github.io/GalRadia.github.io-Android-Seminar/).
 
+## License
+This project is licensed under the [MIT License](LICENSE).

@@ -88,7 +88,7 @@ public class SignInActivity extends AppCompatActivity {
             String password = Objects.requireNonNull(passwordEditText.getText()).toString();
             String role = roleSwitch.isChecked() ? "manager" : "user";
             inventoryManagement.register(username, password, role).observe(this, success -> {
-                if (success!=null) {
+                if (success) {
                     new AlertDialog.Builder(SignInActivity.this)
                             .setTitle("Registration Successful")
                             .setMessage("You can now login")

@@ -15,6 +15,7 @@ import com.example.inventorymanagementsdk.repository.ItemRepository;
 import com.example.inventorymanagementsdk.repository.TransactionRepository;
 import com.example.inventorymanagementsdk.repository.UserRepository;
 import com.example.inventorymanagementsdk.responses.DateResponse;
+import com.example.inventorymanagementsdk.responses.ResponseMessage;
 import com.example.inventorymanagementsdk.responses.TokenResponse;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -138,7 +139,7 @@ public class InventoryManagement {
         return userRepository.register(user);
     }
 
-    public Call<Void> registerCall(String username, String password, String role) {
+    public Call<ResponseMessage> registerCall(String username, String password, String role) {
         User user = new User(username, password, role);
         return userRepository.registerCall(user);
     }

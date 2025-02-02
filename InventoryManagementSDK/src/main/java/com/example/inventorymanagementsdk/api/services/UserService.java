@@ -2,6 +2,7 @@ package com.example.inventorymanagementsdk.api.services;
 
 import com.example.inventorymanagementsdk.models.User;
 import com.example.inventorymanagementsdk.responses.DateResponse;
+import com.example.inventorymanagementsdk.responses.ResponseMessage;
 import com.example.inventorymanagementsdk.responses.TokenResponse;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserService {
     Call<TokenResponse> login(@Body User user);
 
     @POST("auth/register")
-    Call<Void> register(@Body User user);
+    Call<ResponseMessage> register(@Body User user);
 
     @PUT("auth/refresh-token")
     Call<TokenResponse> refreshToken();

@@ -105,8 +105,8 @@ public class InventoryViewModel extends AndroidViewModel {
         itemsLiveData = inventoryManagement.getAllItemsAsLiveData();
     }
 
-    public void purchaseItem(Item item, int quantity) {
-        inventoryManagement.insertTransaction(item.getId(), quantity);
+    public void purchaseItem(String item_id, int quantity) {
+        inventoryManagement.insertTransaction(item_id, quantity);
     }
 
     public LiveData<List<Transaction>> getAllTransactions() {

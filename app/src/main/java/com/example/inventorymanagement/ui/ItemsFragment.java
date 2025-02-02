@@ -153,6 +153,7 @@ public class ItemsFragment extends Fragment {
 
         // Add the EditTexts to the layout
         layout.addView(nameEditText);
+        layout.addView(descriptionEditText);
         layout.addView(priceEditText);
         layout.addView(quantityEditText);
 
@@ -209,8 +210,9 @@ public class ItemsFragment extends Fragment {
         layout.setPadding(50, 30, 50, 30); // Optional padding for the whole layout
 
         // Add the description and EditTexts to the layout
-        layout.addView(descriptionEditText);
         layout.addView(nameEditText);
+        layout.addView(descriptionEditText);
+
         layout.addView(priceEditText);
         layout.addView(quantityEditText);
 
@@ -264,7 +266,7 @@ public class ItemsFragment extends Fragment {
         // Set dialog buttons
         builder.setPositiveButton("Buy", (dialog, which) -> {
             int selectedQuantity = (int) quantitySpinner.getSelectedItem();
-            inventoryViewModel.purchaseItem(item, selectedQuantity);
+            inventoryViewModel.purchaseItem(item.getId(), selectedQuantity);
             Toast.makeText(getContext(), "Purchased " + selectedQuantity + " " + item.getName(), Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());

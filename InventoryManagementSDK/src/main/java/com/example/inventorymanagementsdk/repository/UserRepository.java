@@ -8,8 +8,8 @@ import com.example.inventorymanagementsdk.api.services.UserService;
 import com.example.inventorymanagementsdk.auth.TokenManager;
 import com.example.inventorymanagementsdk.models.User;
 import com.example.inventorymanagementsdk.responses.DateResponse;
+import com.example.inventorymanagementsdk.responses.ResponseMessage;
 import com.example.inventorymanagementsdk.responses.TokenResponse;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,27 +24,39 @@ public class UserRepository {
     MutableLiveData<Boolean> userRegisterMutableLiveData = new MutableLiveData<>();
 
 
-
     public UserRepository() {
         this.userService = ApiClient.getClient().create(UserService.class);
     }
 
     public LiveData<Boolean> register(User user) {
         userService.register(user).enqueue(new Callback<>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                userRegisterMutableLiveData.postValue(true);
+            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                if (response.isSuccessful()) {
+                    // Handle success response (e.g., 200 or 201)
+                    if (response.body() != null) {
+                        if (response.body().getMessage().equals("User registered successfully")) {
+                            userRegisterMutableLiveData.postValue(true);
+                        } else {
+                            userRegisterMutableLiveData.postValue(false);
+                        }
+                    } else {
+                        userRegisterMutableLiveData.postValue(false);
+                    }
+                } else {
+
+                    userRegisterMutableLiveData.postValue(false);
+                }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseMessage> call, Throwable t) {
                 userRegisterMutableLiveData.postValue(false);
             }
         });
         return userRegisterMutableLiveData;
     }
 
-    public Call<Void> registerCall(User user) {
+    public Call<ResponseMessage> registerCall(User user) {
         return userService.register(user);
     }
 

@@ -57,7 +57,6 @@ public class TransactionsFragment extends Fragment {
             });
         } else {
             inventoryViewModel.getUserTransactions().observe(getViewLifecycleOwner(), transactions -> {
-                Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", "setupUI: " + transactions);
                 transactionAdapter.setTransactionList(transactions);
                 transactionAdapter.notifyDataSetChanged();
             });
